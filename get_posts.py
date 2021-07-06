@@ -21,7 +21,7 @@ def write_posts():
         if subname == 'Home':
             continue
         os.mkdir(subname)
-        for submission in reddit.subreddit(sub.display_name).hot(limit=1000):
+        for submission in reddit.subreddit(sub.display_name).hot(limit=200):
             url = submission.url
             if '.jpg' in url[-4:] or '.png' in url[-4:]:
                 r = requests.get(url, stream=True)
@@ -31,7 +31,7 @@ def write_posts():
                         for chunk in r:
                             f.write(chunk)
                 
-                    df = df.append({'id': i, 'categories': subname}, ignore_index=True)
+                    df = df.append({'id': int(i), 'categories': subname}, ignore_index=True)
                     i += 1
     df.to_csv('categories.csv', index=False)
 
